@@ -6,6 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+#include "trace.h"
 
 int
 sys_fork(void)
@@ -88,4 +89,33 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+int
+sys_trace(void)
+{
+  
+  return 0;
+}
+
+int sys_t_toggle(void)
+{
+    int on_off;
+
+    if (argint(0, &on_off) < 0)
+        return -1;
+
+    trace_flag = on_off;
+    return 0;
+}
+
+int sys_excid(void)
+{
+    int sysid;
+
+    if (argint(0, &sysid) < 0)
+        return -1;
+
+    exclusive_flag = sysid;
+    return 0;
 }

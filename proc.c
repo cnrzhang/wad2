@@ -6,6 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "trace.h"
 
 struct {
   struct spinlock lock;
@@ -15,6 +16,7 @@ struct {
 static struct proc *initproc;
 
 int nextpid = 1;
+int trace_flag = 0;
 extern void forkret(void);
 extern void trapret(void);
 
@@ -49,6 +51,12 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+  if(trace_flag == TRACE_ON){
+    p->tracer = TRACE_ON;
+  }
+  else{
+    p->tracer = TRACE_OFF;
+  }
 
   release(&ptable.lock);
 
